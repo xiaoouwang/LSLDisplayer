@@ -1,0 +1,87 @@
+{
+  "source_file": "/Users/xiwang/Documents/konstantin/newtest.xdf",
+  "streams": [
+    {
+      "index": 1,
+      "name": "MousePosition",
+      "type": "Position",
+      "channel_count": 2,
+      "nominal_srate": 0.0,
+      "start_time": 579422.902208387,
+      "end_time": 579435.2460703553,
+      "sample_count": 534,
+      "display": {
+        "monitor_count": 2,
+        "primary": {
+          "width": 1920,
+          "height": 1200
+        },
+        "virtual_origin": {
+          "width": -2400,
+          "height": 0
+        },
+        "monitors": [
+          {
+            "label": "Display 1",
+            "x": -2400,
+            "y": 0,
+            "width": 2400,
+            "height": 1200
+          },
+          {
+            "label": "Primary",
+            "x": 0,
+            "y": 0,
+            "width": 1920,
+            "height": 1200
+          }
+        ]
+      },
+      "file": "1_MousePosition.csv"
+    },
+    {
+      "index": 2,
+      "name": "Keyboard",
+      "type": "Markers",
+      "channel_count": 1,
+      "nominal_srate": 0.0,
+      "start_time": 579426.434862231,
+      "end_time": 579432.8779642031,
+      "sample_count": 16,
+      "file": "2_Keyboard.csv"
+    },
+    {
+      "index": 3,
+      "name": "PsychoPy",
+      "type": "Markers",
+      "channel_count": 1,
+      "nominal_srate": 0.0,
+      "start_time": 579422.849941342,
+      "end_time": 579431.9029896649,
+      "sample_count": 7,
+      "file": "3_PsychoPy.csv"
+    },
+    {
+      "index": 4,
+      "name": "MouseButtons",
+      "type": "Markers",
+      "channel_count": 1,
+      "nominal_srate": 0.0,
+      "start_time": 579424.0863318718,
+      "end_time": 579432.8305337586,
+      "sample_count": 19,
+      "file": "4_MouseButtons.csv"
+    },
+    {
+      "index": 5,
+      "name": "MyAudioStream",
+      "type": "Audio",
+      "channel_count": 4,
+      "nominal_srate": 48000.0,
+      "start_time": 579422.3967306297,
+      "end_time": 579435.4067862076,
+      "sample_count": 624480,
+      "file": "5_MyAudioStream.wav"
+    }
+  ]
+}

@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XDF Metadata · newtest.xdf</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f1ea;
+      --panel: #fffdf8;
+      --ink: #1f1d1a;
+      --muted: #6f675d;
+      --line: #ddd4c4;
+      --accent: #9a3412;
+      --accent-soft: #fde8d8;
+      --shadow: 0 10px 30px rgba(31, 29, 26, 0.06);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #fff8ef 0, transparent 28%),
+        linear-gradient(180deg, #efe7d7 0%, var(--bg) 24%, #f8f5ef 100%);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+      padding: 24px 18px;
+      border-right: 1px solid var(--line);
+      background: rgba(255, 253, 248, 0.92);
+      backdrop-filter: blur(8px);
+    }
+
+    .content {
+      padding: 28px 32px 48px;
+      max-width: 1100px;
+    }
+
+    h1, h2 {
+      margin: 0;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.45rem; }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .hero, .stream-card, .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 24px 26px;
+      margin-bottom: 22px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .stat {
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: #f7f1e7;
+      border: 1px solid #eadfce;
+    }
+
+    .stat-label {
+      display: block;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 1.05rem;
+      word-break: break-word;
+    }
+
+    .search {
+      width: 100%;
+      margin: 18px 0 14px;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      font: inherit;
+    }
+
+    .nav-link {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 2px 10px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      border: 1px solid transparent;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background: var(--accent-soft);
+      border-color: #f5c7a8;
+    }
+
+    .nav-index {
+      grid-row: span 2;
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: #efe4d4;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .nav-name {
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .nav-type {
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .stream-card {
+      padding: 22px 24px;
+      margin-bottom: 18px;
+      scroll-margin-top: 24px;
+    }
+
+    .stream-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: start;
+      margin-bottom: 14px;
+    }
+
+    .stream-index {
+      margin: 0 0 4px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+      max-width: 520px;
+    }
+
+    .badge {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: #f7f1e7;
+      border: 1px solid #eadfce;
+      min-width: 88px;
+    }
+
+    .badge-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .badge-value {
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    details {
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 12px 14px;
+      font-weight: 600;
+      background: #f8f2e8;
+      border-bottom: 1px solid transparent;
+    }
+
+    details[open] summary {
+      border-bottom-color: var(--line);
+    }
+
+    summary::-webkit-details-marker { display: none; }
+
+    .meta-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+    }
+
+    .meta-table th,
+    .meta-table td {
+      padding: 10px 14px;
+      border-top: 1px solid #eee4d7;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .meta-table th {
+      width: 34%;
+      color: var(--muted);
+      font-weight: 600;
+      background: #fcfaf6;
+    }
+
+    .meta-table tr:first-child th,
+    .meta-table tr:first-child td {
+      border-top: none;
+    }
+
+    .empty {
+      margin: 0;
+      padding: 14px;
+      color: var(--muted);
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar {
+        position: static;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+      }
+      .stream-header { flex-direction: column; }
+      .badge-row { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <p class="eyebrow">XDF Explorer</p>
+      <h1 style="font-size:1.35rem;">newtest.xdf</h1>
+      <input id="search" class="search" type="search" placeholder="Filter streams...">
+      <nav id="nav"><a href="#stream-0" class="nav-link"><span class="nav-index">0</span><span class="nav-name">example_stream</span><span class="nav-type">Markers</span></a><a href="#stream-1" class="nav-link"><span class="nav-index">1</span><span class="nav-name">MousePosition</span><span class="nav-type">Position</span></a><a href="#stream-2" class="nav-link"><span class="nav-index">2</span><span class="nav-name">Keyboard</span><span class="nav-type">Markers</span></a><a href="#stream-3" class="nav-link"><span class="nav-index">3</span><span class="nav-name">Keyboard</span><span class="nav-type">Markers</span></a><a href="#stream-4" class="nav-link"><span class="nav-index">4</span><span class="nav-name">MouseButtons</span><span class="nav-type">Markers</span></a><a href="#stream-5" class="nav-link"><span class="nav-index">5</span><span class="nav-name">MyAudioStream</span><span class="nav-type">Audio</span></a></nav>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <p class="eyebrow">Recording</p>
+        <h1>Stream metadata</h1>
+        <div class="hero-grid">
+          <div class="stat">
+            <span class="stat-label">File</span>
+            <span class="stat-value">/Users/xiwang/Documents/konstantin/explorer/newtest.xdf</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Streams</span>
+            <span class="stat-value">6</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">XDF version</span>
+            <span class="stat-value">1.0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Recorded at</span>
+            <span class="stat-value">2026-07-10T09:47:48+0200</span>
+          </div>
+        </div>
+        <details style="margin-top:18px;border:none;box-shadow:none;background:transparent;">
+          <summary style="background:transparent;padding-left:0;">File header</summary>
+          <table class="meta-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><th>info.datetime</th><td>2026-07-10T09:47:48+0200</td></tr>
+<tr><th>info.version</th><td>1.0</td></tr></tbody></table>
+        </details>
+      </section>
+
+      <div id="streams">
+    <section class="stream-card" id="stream-0" data-name="example_stream">
+      <div class="stream-header">
+        <div>
+          <p class="stream-index">Stream 0</p>
+          <h2>example_stream</h2>
+        </div>
+        <div class="badge-row"><span class="badge"><span class="badge-label">Type</span><span class="badge-value">Markers</span></span><span class="badge"><span class="badge-label">Channels</span><span class="badge-value">1</span></span><span class="badge"><span class="badge-label">Sample rate</span><span class="badge-value">0.000000000000000 Hz</span></span><span class="badge"><span class="badge-label">Samples</span><span class="badge-value">7</span></span><span class="badge"><span class="badge-label">Duration</span><span class="badge-value">9.05 s</span></span></div>
+      </div>
+
+      <details open>
+        <summary>Stream info</summary>
+        <table class="meta-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><th>channel_count</th><td>1</td></tr>
+<tr><th>channel_format</th><td>int32</td></tr>
+<tr><th>clock_segments</th><td>[[0, 6]]</td></tr>
+<tr><th>created_at</th><td>579413.1973997999</td></tr>
+<tr><th>desc</th><td>—</td></tr>
+<tr><th>effective_srate</th><td>0</td></tr>
+<tr><th>hostname</th><td>PW0N4VX8</td></tr>
+<tr><th>name</th><td>example_stream</td></tr>
+<tr><th>nominal_srate</th><td>0.000000000000000</td></tr>
+<tr><th>segments</th><td>[[0, 6]]</td></tr>
+<tr><th>session_id</th><td>default</td></tr>
+<tr><th>source_id</th><td>example_stream_001</td></tr>
+<tr><th>stream_id</th><td>2</td></tr>
+<tr><th>type</th><td>Markers</td></tr>
+<tr><th>uid</th><td>53de4c2b-6597-40ce-b4e3-b33617234a4a</td></tr>
+<tr><th>v4address</th><td>—</td></tr>
+<tr><th>v4data_port</th><td>16577</td></tr>
+<tr><th>v4service_port</th><td>16583</td></tr>
+<tr><th>v6address</th><td>—</td></tr>
+<tr><th>v6data_port</th><td>16577</td></tr>
+<tr><th>v6service_port</th><td>16583</td></tr>
+<tr><th>version</th><td>1.100000000000000</td></tr></tbody></table>
+      </details>
+
+      <details>
+        <summary>Footer</summary>
+        <table class="meta-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><th>info.clock_offsets[0].offset[0].time</th><td>579428.0426</td></tr>
+<tr><th>info.clock_offsets[0].offset[0].value</th><td>-1.51999993249774e-05</td></tr>
+<tr><th>info.clock_offsets[0].offset[1].time</th><td>579433.04287185</td></tr>
+<tr><th>info.clock_offsets[0].offset[1].value</th><td>-5.749985575675964e-06</td></tr>
+<tr><th>info.clock_offsets[0].offset[2].time</th><td>579438.043819</td></tr>
+<tr><th>info.clock_offsets[0].offset[2].value</th><td>-1.649995101615787e-05</td></tr>
+<tr><th>info.first_timestamp</th><td>579422.8499525</td></tr>
+<tr><th>info.last_timestamp</th><td>579431.9030019999</td></tr>
+<tr><th>info.sample_count</th><td>7</td></tr></tbody></table>
+      </details>
+
+      <details open>
+        <summary>Data summary</summary>
+        <table class="meta-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><th>clock_times</th><td>579428, 579433, 579438</td></tr>
+<tr><th>clock_values</th><td>-1.52e-05, -5.74999e-06, -1.65e-05</td></tr>
+<tr><th>time_series.dtype</th><td>int32</td></tr>
+<tr><th>time_series.sample_count</th><td>7</td></tr>
+<tr><th>time_series.shape</th><td>7, 1</td></tr>
+<tr><th>time_stamps.count</th><td>7</td></tr>
+<tr><th>time_stamps.duration_s</th><td>9.053048</td></tr>
+<tr><th>time_stamps.first</th><td>579423</td></tr>
+<tr><th>time_stamps.last</th><td>579432</td></tr></tbody></table>
+      </details>
+    </section>
+    
+    <section class="stream-card" id="stream-1" data-name="mouseposition">
+      <div class="stream-header">
+        <div>
+          <p class="stream-index">Stream 1</p>
+          <h2>MousePosition</h2>
+        </div>
+        <div class="badge-row"><span class="badge"><span class="badge-label">Type</span><span class="badge-value">Position</span></span><span class="badge"><span class="badge-label">Channels</span><span class="badge-value">2</span></span><span class="badge"><span class="badge-label">Sample rate</span><span class="badge-value">0 Hz</span></span><span class="badge"><span class="badge-label">Samples</span><span class="badge-value">534</span></span><span class="badge"><span class="badge-label">Duration</span><span class="badge-value">12.34 s</span></span></div>
+      </div>
+
+      <details open>
+        <summary>Stream info</summary>
+        <table class="meta-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><th>channel_count</th><td>2</td></tr>
+<tr><th>channel_format</th><td>float32</td></tr>
+<tr><th>clock_segments</th><td>[[0, 533]]</td></tr>
+<tr><th>created_at</th><td>579336.47461090004</td></tr>
+<tr><th>desc[0].channels[0].channel[0].label</th><td>MouseX</td></tr>
+<tr><th>desc[0].channels[0].channel[0].origin</th><td>top</td></tr>
+<tr><th>desc[0].channels[0].channel[0].type</th><td>PositionX</td></tr>
+<tr><th>desc[0].channels[0].channel[0].unit</th><td>pixels</td></tr>
+<tr><th>desc[0].channels[0].channel[1].label</th><td>MouseY</td></tr>
+<tr><th>desc[0].channels[0].channel[1].origin</th><td>left</td></tr>
+<tr><th>desc[0].channels[0].channel[1].type</th><td>PositionY</td></tr>
+<tr><th>desc[0].channels[0].channel[1].unit</th><td>pixels</td></tr>
+<tr><th>desc[0].setup[0].display[0].monitors</th><td>2</td></tr>
+<tr><th>desc[0].setup[0].display[0].resolution_primary[0].X</th><td>1920</td></tr>
+<tr><th>desc[0].setup[0].display[0].resolution_primary[0].Y</th><td>1200</td></tr>
+<tr><th>desc[0].setup[0].display[0].resolution_virtual[0].X</th><td>-2400</td></tr>
+<tr><th>desc[0].setup[0].display[0].resolution_virtual[0].Y</th><td>0</td></tr>
+<tr><th>effective_srate</th><td>0</td></tr>
+<tr><th>hostname</th><td>PW0N4VX8</td></tr>
+<tr><th>name</th><td>MousePosition</td></tr>
+<tr><th>nominal_srate</th><td>0</td></tr>
+<tr><th>segments</th><td>[[0, 533]]</td></tr>
+<tr><th>session_id</th><td>default</td></tr>
+<tr><th>source_id</th><td>MousePositionCapture_PW0N4VX8</td></tr>
+<tr><th>stream_id</th><td>1</td></tr>
+<tr><th>type</th><td>Position</td></tr>
+<tr><th>uid</th><td>3c6d4307-bfb8-4804-b46f-e759502765fe</td></tr>
+<tr><th>v4address</th><td>—</td></tr>
+<tr><th>v4data_port</th><td>16576</td></tr>
+<tr><th>v4service_port</th><td>16582</td></tr>
+<tr><th>v6address</th><td>—</td></tr>
+<tr><th>v6data_port</th><td>16576</td></tr>
+<tr><th>v6service_port</th><td>16582</td></tr>
+<tr><th>version</th><td>1.1000000000000001</td></tr></tbody></table>
+      </details>
+
+      <details>
+        <summary>Footer</summary>
+        <table class="meta-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><th>info.clock_offsets[0].offset[0].time</th><td>579428.042643</td></tr>
+<tr><th>info.clock_offsets[0].offset[0].value</th><td>-7.500057108700275e-06</td></tr>
+<tr><th>info.clock_offsets[0].offset[1].time</th><td>579433.0427709501</td></tr>
+<tr><th>info.clock_offsets[0].offset[1].value</th><td>-1.785001950338483e-05</td></tr>
+<tr><th>info.clock_offsets[0].offset[2].time</th><td>579438.0438906001</td></tr>
+<tr><th>info.clock_offsets[0].offset[2].value</th><td>-1.020001946017146e-05</td></tr>
+<tr><th>info.first_timestamp</th><td>579422.9022175</td></tr>
+<tr><th>info.last_timestamp</th><td>579435.2460828</td></tr>
+<tr><th>info.sample_count</th><td>534</td></tr></tbody></table>
+      </details>
+
+      <details open>
+        <summary>Data summary</summary>
+        <table class="meta-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><th>clock_times</th><td>579428, 579433, 579438</td></tr>
+<tr><th>clock_values</th><td>-7.50006e-06, -1.785e-05, -1.02e-05</td></tr>
+<tr><th>time_series.dtype</th><td>float32</td></tr>
+<tr><th>time_series.sample_count</th><td>534</td></tr>
+<tr><th>time_series.shape</th><td>534, 2</td></tr>
+<tr><th>time_stamps.count</th><td>534</td></tr>
+<tr><th>time_stamps.duration_s</th><td>12.343862</td></tr>
+<tr><th>time_stamps.first</th><td>579423</td></tr>
+<tr><th>time_stamps.last</th><td>579435</td></tr></tbody></table>
+      </details>
+    </section>
+    
+    <section class="stream-card" id="stream-2" data-name="keyboard">
+      <div class="stream-header">
+        <div>
+          <p class="stream-index">Stream 2</p>
+          <h2>Keyboard</h2>
+        </div>
+        <div class="badge-row"><span class="badge"><span class="badge-label">Type</span><span class="badge-value">Markers</span></span><span class="badge"><span class="badge-label">Channels</span><span class="badge-value">1</span></span><span class="badge"><span class="badge-label">Sample rate</span><span class="badge-value">0 Hz</span></span><span class="badge"><span class="badge-label">Samples</span><span class="badge-value">16</span></span><span class="badge"><span class="badge-label">Duration</span><span class="badge-value">6.44 s</span></span></div>
+      </div>
+
+      <details open>
+        <summary>Stream info</summary>
+        <table class="meta-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><th>channel_count</th><td>1</td></tr>
+<tr><th>channel_format</th><td>string</td></tr>
+<tr><th>clock_segments</th><td>[[0, 15]]</td></tr>
+<tr><th>created_at</th><td>579266.68241010001</td></tr>
+<tr><th>desc</th><td>—</td></tr>
+<tr><th>effective_srate</th><td>0</td></tr>
+<tr><th>hostname</th><td>PW0N4VX8</td></tr>
+<tr><th>name</th><td>Keyboard</td></tr>
+<tr><th>nominal_srate</th><td>0</td></tr>
+<tr><th>segments</th><td>[[0, 15]]</td></tr>
+<tr><th>session_id</th><td>default</td></tr>
+<tr><th>source_id</th><td>KeyboardCapture_PW0N4VX8</td></tr>
+<tr><th>stream_id</th><td>3</td></tr>
+<tr><th>type</th><td>Markers</td></tr>
+<tr><th>uid</th><td>5768e7ae-8776-4acc-a426-65f462e7c480</td></tr>
+<tr><th>v4address</th><td>—</td></tr>
+<tr><th>v4data_port</th><td>16574</td></tr>
+<tr><th>v4service_port</th><td>16580</td></tr>
+<tr><th>v6address</th><td>—</td></tr>
+<tr><th>v6data_port</th><td>16574</td></tr>
+<tr><th>v6service_port</th><td>16580</td></tr>
+<tr><th>version</th><td>1.1000000000000001</td></tr></tbody></table>
+      </details>
+
+      <details>
+        <summary>Footer</summary>
+        <table class="meta-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><th>info.clock_offsets[0].offset[0].time</th><td>579428.0426709501</td></tr>
+<tr><th>info.clock_offsets[0].offset[0].value</th><td>4.050030838698149e-06</td></tr>
+<tr><th>info.clock_offsets[0].offset[1].time</th><td>579433.04277935</td></tr>
+<tr><th>info.clock_offsets[0].offset[1].value</th><td>-2.035003853961825e-05</td></tr>
+<tr><th>info.clock_offsets[0].offset[2].time</th><td>579438.0439758999</td></tr>
+<tr><th>info.clock_offsets[0].offset[2].value</th><td>-2.440001117065549e-05</td></tr>
+<tr><th>info.first_timestamp</th><td>579426.434857</td></tr>
+<tr><th>info.last_timestamp</th><td>579432.8779773</td></tr>
+<tr><th>info.sample_count</th><td>16</td></tr></tbody></table>
+      </details>
+
+      <details open>
+        <summary>Data summary</summary>
+        <table class="meta-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><th>clock_times</th><td>579428, 579433, 579438</td></tr>
+<tr><th>clock_values</th><td>4.05003e-06, -2.035e-05, -2.44e-05</td></tr>
+<tr><th>time_series.dtype</th><td>&lt;U14</td></tr>
+<tr><th>time_series.sample_count</th><td>16</td></tr>
+<tr><th>time_series.shape</th><td>16, 1</td></tr>
+<tr><th>time_stamps.count</th><td>16</td></tr>
+<tr><th>time_stamps.duration_s</th><td>6.443102</td></tr>
+<tr><th>time_stamps.first</th><td>579426</td></tr>
+<tr><th>time_stamps.last</th><td>579433</td></tr></tbody></table>
+      </details>
+    </section>
+    
+    <section class="stream-card" id="stream-3" data-name="keyboard">
+      <div class="stream-header">
+        <div>
+          <p class="stream-index">Stream 3</p>
+          <h2>Keyboard</h2>
+        </div>
+        <div class="badge-row"><span class="badge"><span class="badge-label">Type</span><span class="badge-value">Markers</span></span><span class="badge"><span class="badge-label">Channels</span><span class="badge-value">1</span></span><span class="badge"><span class="badge-label">Sample rate</span><span class="badge-value">0 Hz</span></span><span class="badge"><span class="badge-label">Samples</span><span class="badge-value">16</span></span><span class="badge"><span class="badge-label">Duration</span><span class="badge-value">6.44 s</span></span></div>
+      </div>
+
+      <details open>
+        <summary>Stream info</summary>
+        <table class="meta-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><th>channel_count</th><td>1</td></tr>
+<tr><th>channel_format</th><td>string</td></tr>
+<tr><th>clock_segments</th><td>[[0, 15]]</td></tr>
+<tr><th>created_at</th><td>579193.52604909998</td></tr>
+<tr><th>desc</th><td>—</td></tr>
+<tr><th>effective_srate</th><td>0</td></tr>
+<tr><th>hostname</th><td>PW0N4VX8</td></tr>
+<tr><th>name</th><td>Keyboard</td></tr>
+<tr><th>nominal_srate</th><td>0</td></tr>
+<tr><th>segments</th><td>[[0, 15]]</td></tr>
+<tr><th>session_id</th><td>default</td></tr>
+<tr><th>source_id</th><td>KeyboardCapture_PW0N4VX8</td></tr>
+<tr><th>stream_id</th><td>6</td></tr>
+<tr><th>type</th><td>Markers</td></tr>
+<tr><th>uid</th><td>e0c34341-c2e2-4339-a975-f6e79679eeb0</td></tr>
+<tr><th>v4address</th><td>—</td></tr>
+<tr><th>v4data_port</th><td>16573</td></tr>
+<tr><th>v4service_port</th><td>16579</td></tr>
+<tr><th>v6address</th><td>—</td></tr>
+<tr><th>v6data_port</th><td>16573</td></tr>
+<tr><th>v6service_port</th><td>16579</td></tr>
+<tr><th>version</th><td>1.1000000000000001</td></tr></tbody></table>
+      </details>
+
+      <details>
+        <summary>Footer</summary>
+        <table class="meta-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><th>info.clock_offsets[0].offset[0].time</th><td>579428.0416325</td></tr>
+<tr><th>info.clock_offsets[0].offset[0].value</th><td>-1.599953975528479e-06</td></tr>
+<tr><th>info.clock_offsets[0].offset[1].time</th><td>579433.04224685</td></tr>
+<tr><th>info.clock_offsets[0].offset[1].value</th><td>-1.024996163323522e-05</td></tr>
+<tr><th>info.clock_offsets[0].offset[2].time</th><td>579438.0428402</td></tr>
+<tr><th>info.clock_offsets[0].offset[2].value</th><td>-3.600004129111767e-05</td></tr>
+<tr><th>info.first_timestamp</th><td>579426.4350415</td></tr>
+<tr><th>info.last_timestamp</th><td>579432.8781216</td></tr>
+<tr><th>info.sample_count</th><td>16</td></tr></tbody></table>
+      </details>
+
+      <details open>
+        <summary>Data summary</summary>
+        <table class="meta-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><th>clock_times</th><td>579428, 579433, 579438</td></tr>
+<tr><th>clock_values</th><td>-1.59995e-06, -1.025e-05, -3.6e-05</td></tr>
+<tr><th>time_series.dtype</th><td>&lt;U14</td></tr>
+<tr><th>time_series.sample_count</th><td>16</td></tr>
+<tr><th>time_series.shape</th><td>16, 1</td></tr>
+<tr><th>time_stamps.count</th><td>16</td></tr>
+<tr><th>time_stamps.duration_s</th><td>6.443058</td></tr>
+<tr><th>time_stamps.first</th><td>579426</td></tr>
+<tr><th>time_stamps.last</th><td>579433</td></tr></tbody></table>
+      </details>
+    </section>
+    
+    <section class="stream-card" id="stream-4" data-name="mousebuttons">
+      <div class="stream-header">
+        <div>
+          <p class="stream-index">Stream 4</p>
+          <h2>MouseButtons</h2>
+        </div>
+        <div class="badge-row"><span class="badge"><span class="badge-label">Type</span><span class="badge-value">Markers</span></span><span class="badge"><span class="badge-label">Channels</span><span class="badge-value">1</span></span><span class="badge"><span class="badge-label">Sample rate</span><span class="badge-value">0 Hz</span></span><span class="badge"><span class="badge-label">Samples</span><span class="badge-value">19</span></span><span class="badge"><span class="badge-label">Duration</span><span class="badge-value">8.74 s</span></span></div>
+      </div>
+
+      <details open>
+        <summary>Stream info</summary>
+        <table class="meta-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><th>channel_count</th><td>1</td></tr>
+<tr><th>channel_format</th><td>string</td></tr>
+<tr><th>clock_segments</th><td>[[0, 18]]</td></tr>
+<tr><th>created_at</th><td>579336.47065719997</td></tr>
+<tr><th>desc</th><td>—</td></tr>
+<tr><th>effective_srate</th><td>0</td></tr>
+<tr><th>hostname</th><td>PW0N4VX8</td></tr>
+<tr><th>name</th><td>MouseButtons</td></tr>
+<tr><th>nominal_srate</th><td>0</td></tr>
+<tr><th>segments</th><td>[[0, 18]]</td></tr>
+<tr><th>session_id</th><td>default</td></tr>
+<tr><th>source_id</th><td>MouseButtonCapture_PW0N4VX8</td></tr>
+<tr><th>stream_id</th><td>5</td></tr>
+<tr><th>type</th><td>Markers</td></tr>
+<tr><th>uid</th><td>c736a16c-c739-48a5-bbf9-268dadd6b652</td></tr>
+<tr><th>v4address</th><td>—</td></tr>
+<tr><th>v4data_port</th><td>16575</td></tr>
+<tr><th>v4service_port</th><td>16581</td></tr>
+<tr><th>v6address</th><td>—</td></tr>
+<tr><th>v6data_port</th><td>16575</td></tr>
+<tr><th>v6service_port</th><td>16581</td></tr>
+<tr><th>version</th><td>1.1000000000000001</td></tr></tbody></table>
+      </details>
+
+      <details>
+        <summary>Footer</summary>
+        <table class="meta-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><th>info.clock_offsets[0].offset[0].time</th><td>579428.0425641</td></tr>
+<tr><th>info.clock_offsets[0].offset[0].value</th><td>8.00006091594696e-07</td></tr>
+<tr><th>info.clock_offsets[0].offset[1].time</th><td>579433.0427867</td></tr>
+<tr><th>info.clock_offsets[0].offset[1].value</th><td>-1.090002479031682e-05</td></tr>
+<tr><th>info.clock_offsets[0].offset[2].time</th><td>579438.0438461</td></tr>
+<tr><th>info.clock_offsets[0].offset[2].value</th><td>-3.490003291517496e-05</td></tr>
+<tr><th>info.first_timestamp</th><td>579424.0863149</td></tr>
+<tr><th>info.last_timestamp</th><td>579432.8305480001</td></tr>
+<tr><th>info.sample_count</th><td>19</td></tr></tbody></table>
+      </details>
+
+      <details open>
+        <summary>Data summary</summary>
+        <table class="meta-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><th>clock_times</th><td>579428, 579433, 579438</td></tr>
+<tr><th>clock_values</th><td>8.00006e-07, -1.09e-05, -3.49e-05</td></tr>
+<tr><th>time_series.dtype</th><td>&lt;U25</td></tr>
+<tr><th>time_series.sample_count</th><td>19</td></tr>
+<tr><th>time_series.shape</th><td>19, 1</td></tr>
+<tr><th>time_stamps.count</th><td>19</td></tr>
+<tr><th>time_stamps.duration_s</th><td>8.744202</td></tr>
+<tr><th>time_stamps.first</th><td>579424</td></tr>
+<tr><th>time_stamps.last</th><td>579433</td></tr></tbody></table>
+      </details>
+    </section>
+    
+    <section class="stream-card" id="stream-5" data-name="myaudiostream">
+      <div class="stream-header">
+        <div>
+          <p class="stream-index">Stream 5</p>
+          <h2>MyAudioStream</h2>
+        </div>
+        <div class="badge-row"><span class="badge"><span class="badge-label">Type</span><span class="badge-value">Audio</span></span><span class="badge"><span class="badge-label">Channels</span><span class="badge-value">4</span></span><span class="badge"><span class="badge-label">Sample rate</span><span class="badge-value">48000.00000000000 Hz</span></span><span class="badge"><span class="badge-label">Samples</span><span class="badge-value">624480</span></span><span class="badge"><span class="badge-label">Effective rate</span><span class="badge-value">47999.7 Hz</span></span><span class="badge"><span class="badge-label">Duration</span><span class="badge-value">13.01 s</span></span></div>
+      </div>
+
+      <details open>
+        <summary>Stream info</summary>
+        <table class="meta-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><th>channel_count</th><td>4</td></tr>
+<tr><th>channel_format</th><td>float32</td></tr>
+<tr><th>clock_segments</th><td>[[0, 624479]]</td></tr>
+<tr><th>created_at</th><td>579186.6887401000</td></tr>
+<tr><th>desc[0].device</th><td>Microphone Array (Intel® Smart Sound Technology for Digital Microphones)</td></tr>
+<tr><th>desc[0].provider[0].api</th><td>QtMultimedia</td></tr>
+<tr><th>effective_srate</th><td>47999.7</td></tr>
+<tr><th>hostname</th><td>PW0N4VX8</td></tr>
+<tr><th>name</th><td>MyAudioStream</td></tr>
+<tr><th>nominal_srate</th><td>48000.00000000000</td></tr>
+<tr><th>segments</th><td>[[0, 624479]]</td></tr>
+<tr><th>session_id</th><td>default</td></tr>
+<tr><th>source_id</th><td>Microphone Array (Intel® Smart Sound Technology for Digital Microphones)</td></tr>
+<tr><th>stream_id</th><td>4</td></tr>
+<tr><th>type</th><td>Audio</td></tr>
+<tr><th>uid</th><td>cd6d6eda-431b-4323-a3c7-ecab2c01c1cc</td></tr>
+<tr><th>v4address</th><td>—</td></tr>
+<tr><th>v4data_port</th><td>16572</td></tr>
+<tr><th>v4service_port</th><td>16578</td></tr>
+<tr><th>v6address</th><td>—</td></tr>
+<tr><th>v6data_port</th><td>16572</td></tr>
+<tr><th>v6service_port</th><td>16578</td></tr>
+<tr><th>version</th><td>1.100000000000000</td></tr></tbody></table>
+      </details>
+
+      <details>
+        <summary>Footer</summary>
+        <table class="meta-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><th>info.clock_offsets[0].offset[0].time</th><td>579428.0426344499</td></tr>
+<tr><th>info.clock_offsets[0].offset[0].value</th><td>-3.175000892952085e-05</td></tr>
+<tr><th>info.clock_offsets[0].offset[1].time</th><td>579433.04276905</td></tr>
+<tr><th>info.clock_offsets[0].offset[1].value</th><td>-1.80500210262835e-05</td></tr>
+<tr><th>info.clock_offsets[0].offset[2].time</th><td>579438.0439909499</td></tr>
+<tr><th>info.clock_offsets[0].offset[2].value</th><td>-1.07499654404819e-05</td></tr>
+<tr><th>info.first_timestamp</th><td>579422.3938870333</td></tr>
+<tr><th>info.last_timestamp</th><td>579435.401948235</td></tr>
+<tr><th>info.sample_count</th><td>624480</td></tr></tbody></table>
+      </details>
+
+      <details open>
+        <summary>Data summary</summary>
+        <table class="meta-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><th>clock_times</th><td>579428, 579433, 579438</td></tr>
+<tr><th>clock_values</th><td>-3.175e-05, -1.805e-05, -1.075e-05</td></tr>
+<tr><th>time_series.dtype</th><td>float32</td></tr>
+<tr><th>time_series.sample_count</th><td>624480</td></tr>
+<tr><th>time_series.shape</th><td>624480, 4</td></tr>
+<tr><th>time_stamps.count</th><td>624480</td></tr>
+<tr><th>time_stamps.duration_s</th><td>13.010056</td></tr>
+<tr><th>time_stamps.first</th><td>579422</td></tr>
+<tr><th>time_stamps.last</th><td>579435</td></tr></tbody></table>
+      </details>
+    </section>
+    </div>
+    </main>
+  </div>
+
+  <script>
+    const search = document.getElementById("search");
+    const cards = [...document.querySelectorAll(".stream-card")];
+    const navLinks = [...document.querySelectorAll(".nav-link")];
+
+    search.addEventListener("input", () => {
+      const query = search.value.trim().toLowerCase();
+      cards.forEach((card, index) => {
+        const visible = !query || card.dataset.name.includes(query);
+        card.classList.toggle("hidden", !visible);
+        navLinks[index].classList.toggle("hidden", !visible);
+      });
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const id = entry.target.id;
+          navLinks.forEach((link) => {
+            link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
+          });
+        });
+      },
+      { rootMargin: "-20% 0px -70% 0px", threshold: 0 }
+    );
+
+    cards.forEach((card) => observer.observe(card));
+  </script>
+</body>
+</html>
